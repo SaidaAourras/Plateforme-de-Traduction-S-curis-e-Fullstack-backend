@@ -1,0 +1,13 @@
+fastapi
+uvicorn[standard]
+sqlalchemy
+pydantic
+dotenv
+pytest
+psycopg2-binary
+requests
+python-jose
+python-multipart
+pyjwt
+pwdlib
+huggingface_hub
