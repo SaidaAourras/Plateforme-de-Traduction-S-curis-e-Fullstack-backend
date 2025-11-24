@@ -1,25 +1,13 @@
 from fastapi import FastAPI
-from hagging_face__en_fr import english_to_frensh
-from hagging_face_fr_en import frensh_to_english
+from api.v1.routes.translate import translate_router
+from db.database import engine
+from db.models.base import Base
+
 
 app = FastAPI()
 
+Base.metadata.create_all(bind=engine)
 
-@app.post('/translate/{choice}')
-def translate(choice:str , text:str):
-    user_text = text
-    if (choice == 'en-fr'):
-        return english_to_frensh(user_text)
-    elif (choice == 'fr-en'):
-        return frensh_to_english(user_text)
-    else:
-        return {'warning':'out of choices en-fr , fr-en'}
+app.include_router(translate_router , prefix="/api/v1")
     
 
-# @app.post('/register')
-# def register():
-#     pass
-
-# @app.post('/login')
-# def login():
-#     pass
