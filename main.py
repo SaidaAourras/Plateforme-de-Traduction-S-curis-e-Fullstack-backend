@@ -11,5 +11,5 @@ Base.metadata.create_all(bind=engine)
 
 app.include_router(translate_router , prefix="/api/v1")
 app.include_router(auth_router ,prefix="/api/v1")
-    
+
 
