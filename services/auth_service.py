@@ -27,16 +27,29 @@ def create_user(user , db):
     
     return new_user 
 
-def authenticate_user(user , db):
-    logged_user = db.query(User).filter(User.username == user.username and verify_password(user.password , User.password)).first()
-    if not logged_user:
-        raise HTTPException(status_code=400, detail="Inactive user")
-    # convertir la date dans un format compatible JSON
+def authenticate_user(user, db):
+    # D'abord, récupérer l'utilisateur par username
+    logged_user = db.query(User).filter(User.username == user.username).first()
     
-    data = {'username': logged_user.username , 'created_at':logged_user.created_at.isoformat()}
+    if not logged_user:
+        raise HTTPException(status_code=400, detail="Incorrect username or password")
+
+    if not verify_password(user.password, logged_user.password_hash):
+        raise HTTPException(status_code=400, detail="Incorrect username or password")
+    
+    # Convertir la date dans un format compatible JSON
+    data = {
+        'username': logged_user.username,
+        'created_at': logged_user.created_at.isoformat()
+    }
+    
     access_token = create_token(data)
-    return {'success':'you logged in succesfully',
-            'access_token':access_token}
+    
+    return {
+        'access_token': access_token,
+        'token_type': 'bearer'
+    }
+
 
 
 def create_token(data:dict):
