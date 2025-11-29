@@ -28,7 +28,7 @@ def create_user(user , db):
     return new_user 
 
 def authenticate_user(user, db):
-    # D'abord, récupérer l'utilisateur par username
+    # D'abord, récupérer l'componentsateur par username
     logged_user = db.query(User).filter(User.username == user.username).first()
     
     if not logged_user:
